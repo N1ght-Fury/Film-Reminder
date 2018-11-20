@@ -325,9 +325,7 @@ while True:
                     if (film_en_name != "Not Found"):
                         original_name = film_en_name
 
-                    with open("C:\\Users\\Talha\\Desktop\\Python Files\\Python"
-                              "\\Kodlama Egzersizleri\\My Projects\\Film_Project"
-                              "\\Film_Posters\\" + original_name + ".png",
+                    with open("Add file path here where you want to save movie posters\\" + original_name + ".png",
                               'wb') as f:
                         f.write(response.content)
 
