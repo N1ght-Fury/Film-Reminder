@@ -16,11 +16,6 @@ clr = Colors.bcolors
 
 locale.setlocale(locale.LC_ALL, "")
 
-day = datetime.now().day
-month = datetime.now().month
-year = datetime.now().year
-today = datetime(year, month, day)
-
 print("""
 Press '1' to organize user database.
 Press '2' to start the program.
@@ -28,6 +23,12 @@ Press 'q' to exit.
 """)
 
 while True:
+    
+    day = datetime.now().day
+    month = datetime.now().month
+    year = datetime.now().year
+    today = datetime(year, month, day)
+    
     number = input("Start Command: ")
 
     if (number == "1"):
