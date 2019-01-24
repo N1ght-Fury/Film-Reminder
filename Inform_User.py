@@ -16,7 +16,7 @@ def send_mail(user,text):
 
         message_text = text
 
-        message_content = MIMEText(message_text, "plain")
+        message_content = MIMEText(message_text, "html")
 
         message.attach(message_content)
 
