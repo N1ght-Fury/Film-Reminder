@@ -22,7 +22,7 @@ class Film():
 
         return ("""
                 Hey there!
-                
+                """ + """
                 {} released today!
 
                 Here is some information below:
@@ -55,20 +55,106 @@ class Film():
 
 
 
-    def text_of_mail(self,en_name,tr_name):
+    def text_of_mail(self,en_name,tr_name,picture_link,film_director,film_players):
+
+        tag = "h1"
 
         if (en_name != "Not Found"):
             name = en_name
         else:
             name = tr_name
 
-        return ("Hey there!\n\n{} released today!\n\nHere is some information below:\n\nRelease Date: {}\n\nFormats: {}\n\n"
-         "Total Time: {}\n\nGenre: {}\n\nScore: {}\n\nAge Rate: {}\n\nSummary: {}\n\n"
-         "Would you want to get ticket for it? Here is the link below to do so!\n\n"
-         "Link: {}"
-         "".format(name, self.Film_Release_Date, self.Film_Formats, self.Film_Time, self.Film_Genre,
-                   self.Film_Score,
-                   self.Film_Age_Rate, self.Film_Summary, self.Film_Link))
+        if (len(name) > 29):
+            tag = "h2"
+
+        return """
+        <html>
+        <head>
+            <title></title>
+        </head>
+        <body>
+
+            <div id="main-div" style="width: 675px; background-color: rgb(237, 237, 237); border: 4px solid black;">
+                
+                <div id="cinemaximum-pic" style="border-bottom: 4px solid black;">
+                    <a href="https://www.cinemaximum.com.tr/"><img src="https://www.cinemaximum.com.tr/Assets/Cgv/assets/images/cinemaximum-logo.png" width="200" height="50" style="margin-left: auto; margin-right: auto; margin-top: 6px; margin-bottom: 6px; display: block;"></a>
+                </div>
+
+                <div id="all-content" style="margin-top: 5px; margin-left: 5px; margin-bottom: 5px; overflow: hidden;">
+                    
+                    <div id="image-poster" style="width: 205px; height: 313px; float: left;">
+                        <a href='""" + self.Film_Link + """'><img src='""" + picture_link + """' width="205" height="313"></a>
+                    </div>
+
+                    <div id="all-movie-info" style="float: left; margin-left: 24px; width: 430px; text-decoration: none;">
+                        
+                        <div id="movie-name" style="height: 40px; width: 400px;">
+                            <""" + tag + """>""" + name + """</""" + tag + """>
+                        </div>
+
+                        <div id="border-set" style="border: 0.5px solid black;"></div>
+
+                        <div id="movie-info" style="margin-top: 10px; font-size: 17px;">
+                            <div id="yonetmen">
+                                <span>
+                                    <strong>Yönetmen: </strong>
+                                </span>
+                                <span>
+                                    """ + film_director + """
+                                </span>
+                            </div>
+
+                            <div id="oyuncular" style="margin-top: 2px;">
+                                <span>
+                                    <strong>Oyuncular: </strong>
+                                </span>
+                                <span>
+                                    """ + film_players + """
+                                </span>
+                            </div>
+
+                            <div id="vizyon-tarihi" style="margin-top: 12px;">
+                                <span>
+                                    <strong>Vizyon Tarihi: </strong>
+                                </span>
+                                <span>
+                                    """ + self.Film_Release_Date + """
+                                </span>
+                            </div>
+
+                            <div id="sure" style="margin-top: 2px;">
+                                <span>
+                                    <strong>Süre: </strong>
+                                </span>
+                                <span>
+                                    """ + self.Film_Time + """
+                                </span>
+                            </div>
+
+                            <div id="tur" style="margin-top: 2px;">
+                                <span>
+                                    <strong>Tür: </strong>
+                                </span>
+                                <span>
+                                    """ + self.Film_Genre + """
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <div id="buy-ticket-button" style="margin-top: 25px; margin-left: 80px;">
+                            <a href='""" + self.Film_Link + """'><button type="button" id="button-settings" style="background-color: white; height: 48px; width: 255px; padding: 11px 26px; font-size: 18px; font-weight: 400; cursor: pointer; display: inline-block; background-color: #F966B0; color: #000; border-radius: 4px; text-align: center; outline: none; box-shadow: none; border: none;">Bilet Al</button></a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </body>
+        </html>
+        """
 
 
 class Film_Database():
