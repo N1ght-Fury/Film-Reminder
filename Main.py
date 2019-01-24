@@ -23,12 +23,12 @@ Press 'q' to exit.
 """)
 
 while True:
-    
+
     day = datetime.now().day
     month = datetime.now().month
     year = datetime.now().year
     today = datetime(year, month, day)
-    
+
     number = input("Start Command: ")
 
     if (number == "1"):
@@ -98,7 +98,7 @@ while True:
 
                     elif (change_what == "Q"):
                         print("You are back to menu.")
-                        break
+
 
             #Delete User
             elif (command == "3"):
@@ -158,12 +158,26 @@ while True:
 
         while True:
 
+
+            now = datetime.now()
+            h = now.hour
+            m = now.minute
+            s = now.second
+            
+            print("Run time: {}:{}:{}".format(h,m,s))
+            
             #Getting HTML content of cinemaximum/akasya
             #You can select a specific movie theater from here: https://www.cinemaximum.com.tr/sinemalar
-            url = "https://www.cinemaximum.com.tr/akasya-sinema-salonu"
-            response = requests.get(url)
-            html_content = response.content
-            soup = BeautifulSoup(html_content, "html.parser")
+            try:
+                url = "https://www.cinemaximum.com.tr/akasya-sinema-salonu?tarih=25-01-2019"
+                response = requests.get(url)
+                html_content = response.content
+                soup = BeautifulSoup(html_content, "html.parser")
+
+            except:
+                print("Something unexpected happened!")
+                time.sleep(300)
+                continue
 
             total_user = mail_data.any_user()
 
@@ -228,6 +242,8 @@ while True:
                 film_age_rate = ""
                 film_en_name = ""
                 film_formats = ""
+                film_director = ""
+                film_players = ""
 
                 for info in film_information:
 
@@ -254,6 +270,15 @@ while True:
                     elif ("Özet : " in info):
                         info = info.replace("Özet : ", "")
                         film_summary = info
+
+                    elif ("Yönetmen: " in info):
+                        info = info.replace("Yönetmen: ", "")
+                        film_director = info
+
+                    elif ("Oyuncular: " in info):
+                        info = info.replace("Oyuncular: ", "")
+                        film_players = info
+
 
 
                 #Getting Film Score
@@ -299,6 +324,9 @@ while True:
                 for tr in soup.find_all("h1"):
                     original_name = tr.text
 
+                if (film_players == ""):
+                    film_players = "Animasyon Filmi"
+
 
                 #Adding Film To Database and Sending Mail
                 if (cinema_data.check_if_film_exists(original_name) == 0):
@@ -313,22 +341,40 @@ while True:
                     #Adding Film to Backup Database
                     film_backup.add_movie(film_details)
 
+                    picture = list_of_pictures[index]
+
                     #Sending Mail
                     mail_addresses = mail_data.get_user_mail()
                     for user, stat in mail_addresses:
                         if (stat == 1):
-                            mail.send_mail(user, film_details.text_of_mail(film_en_name,original_name))
+                            mail.send_mail(user, film_details.text_of_mail(film_en_name,original_name,picture,
+                                                                           film_director,film_players))
 
 
                     #Downloading poster
-                    response = requests.get(list_of_pictures[index])
+                    try:
+                        response = requests.get(list_of_pictures[index])
+                    except:
+                        print("Something unexpected happened while getting to download poster.")
 
                     if (film_en_name != "Not Found"):
                         original_name = film_en_name
+                        original_name = original_name.replace("?","")
 
-                    with open("Add file path here where you want to save movie posters\\" + original_name + ".png",
-                              'wb') as f:
-                        f.write(response.content)
+                    original_name = original_name.replace("?","")
+                    original_name = original_name.replace(":","")
+                    original_name = original_name.replace("*","")
+                    original_name = original_name.replace("?","")
+
+                    try:
+
+                        with open("C:\\Users\\Talha\\Desktop\\Python Files"
+                                  "\\Film_Project"
+                                  "\\Film_Posters\\" + original_name + ".png",
+                                  'wb') as f:
+                            f.write(response.content)
+                    except:
+                        print("Something unexpected happened while trying to download poster.")
 
                 else:
 
@@ -352,13 +398,43 @@ while True:
                 #Finding days
                 day = (today - movie_date).days
                 #print(movie_name, day)
-                if (day >= 50):
+                if (day >= 90):
                     cinema_data.delete_movie(movie_name)
                     print(movie_name, "deleted from database.")
 
             #Waiting for One Day
-            print("Process finished. Waiting for 24 hours.")
-            time.sleep(86400)
+
+            now = datetime.now()
+            h = now.hour
+            m = now.minute
+            s = now.second
+
+            if (m != 0):
+                h += 1
+
+            if (m != 0):
+                wm = 60 - m
+            else:
+                wm = 0
+
+            if (s != 0):
+                ws = 60 - s
+            else:
+                ws = 0
+
+            wh = 9 - h
+            wh = wh + 24
+            
+            print("Process finished. Waiting for {} hours, {} mins, {} secs.".format(wh,wm,ws))
+            
+            wh = 3600 * wh
+            wm = wm * 60
+
+            waiting_time = wh + wm + ws
+            
+            print("End time: {}:{}:{}\n".format(h - 1,m,s))
+            
+            time.sleep(waiting_time)
 
     elif (number == "q"):
         exit()
