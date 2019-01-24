@@ -169,7 +169,7 @@ while True:
             #Getting HTML content of cinemaximum/akasya
             #You can select a specific movie theater from here: https://www.cinemaximum.com.tr/sinemalar
             try:
-                url = "https://www.cinemaximum.com.tr/akasya-sinema-salonu?tarih=25-01-2019"
+                url = "https://www.cinemaximum.com.tr/akasya-sinema-salonu"
                 response = requests.get(url)
                 html_content = response.content
                 soup = BeautifulSoup(html_content, "html.parser")
