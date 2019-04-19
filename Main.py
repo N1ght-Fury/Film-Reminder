@@ -211,6 +211,7 @@ while True:
             #Add movie links to a list
             link_of_films = soup.find_all("a",{"class":"movie-image"})
             list_of_films = list()
+            
             for i in link_of_films:
                 list_of_films.append("https://www.cinemaximum.com.tr" + i['href'])
 
@@ -230,6 +231,7 @@ while True:
                 response = requests.get(url)
                 html_content = response.content
                 soup = BeautifulSoup(html_content, "html.parser")
+                
 
                 film_information = soup.find_all("strong")
 
