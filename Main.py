@@ -4,6 +4,8 @@ from datetime import datetime
 import locale
 import Inform_User as mail
 import time
+import sys
+
 import User_Mail_Database
 import Database_Films
 import Database_Backup
@@ -16,11 +18,11 @@ clr = Colors.bcolors
 
 locale.setlocale(locale.LC_ALL, "")
 
-print("""
-Press '1' to organize user database.
-Press '2' to start the program.
-Press 'q' to exit.
-""")
+#print("""
+#Press '1' to organize user database.
+#Press '2' to start the program.
+#Press 'q' to exit.
+#""")
 
 while True:
 
@@ -29,9 +31,9 @@ while True:
     year = datetime.now().year
     today = datetime(year, month, day)
 
-    number = input("Start Command: ")
+    #number = input("Start Command: ")
 
-    if (number == "1"):
+    if (sys.argv[1] == "1"):
 
         print("""
         Enter '1' to see all users.
@@ -154,7 +156,7 @@ while True:
                 print(clr.RED + "Wrong command. Please try again." + clr.ENDC)
 
 
-    elif (number == "2"):
+    elif (sys.argv[1] == "2"):
 
         while True:
 
@@ -438,8 +440,6 @@ while True:
             
             time.sleep(waiting_time)
 
-    elif (number == "q"):
-        exit()
-
     else:
         print("\nWrong command. Please try again.\n")
+        exit()
